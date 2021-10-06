@@ -1,7 +1,10 @@
-import './sass/main.scss';
+// import './sass/main.scss';
 
 
+////////////////////pixabay//////////////////////////////
+// Your API key: 23726584-b0725e8cc2245e4091c11b21f
 // https://pixabay.com/api/?key=23726584-b0725e8cc2245e4091c11b21f&q=yellow+flowers&image_type=photo&pretty=true
+
 
 ////////////////////axios jest bardzo podobny do fetch//////////////////////////////
 //z axios:
