@@ -5,18 +5,19 @@
 This project is a small application to search and view images by a keyword .
 
 ## Technologies
+
 ### Project is created with:
 
-HTML & CSS
+- HTML & CSS
 
-JavaScript
+- JavaScript
 
-Axios
+- Axios
 
-async/await
+- async/await
 
-Notiflix
+- Notiflix
 
-Pixabay API
+- Pixabay API
 
-SimpleLightbox
+- SimpleLightbox
