@@ -1,10 +1,10 @@
 # HW 11
 
-##General info
+## General info
 This project is small application to search and view images by keyword .
 
-##Technologies
-###Project is created with:
+## Technologies
+### Project is created with:
 
 HTML & CSS
 
