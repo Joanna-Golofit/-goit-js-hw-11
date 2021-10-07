@@ -1,4 +1,53 @@
-// import './sass/main.scss';
+import axios from 'axios';
+
+const q = "cat dog";
+const API_KEY = "23726584-b0725e8cc2245e4091c11b21f";
+let page = 1;
+
+axios
+  .get(
+    `https://pixabay.com/api/?key=${API_KEY}&q=${q}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`,
+  )
+  .then(response => {
+    console.log('response', response);
+    console.log('q', q);
+    console.log('API_KEY', API_KEY);
+    console.log('response.data', response.data);
+    console.log('response.data.hits', response.data.hits);
+    console.log('response.data.hits[0]', response.data.hits[0]);
+    console.log('response.data.hits[1].pageURL', response.data.hits[1].pageURL);
+    console.log('response.data.hits[2].pageURL', response.data.hits[2].pageURL);
+    page++;
+    console.log('page', page);
+  })
+  .catch(err => console.log("Caught error:", err));;
+
+const renderGallery = (data) => {
+  const markup = data
+    .map(d => {
+      return `<div class="photo-card">
+      <img src="" alt="" loading="lazy" />
+      <div class="info">
+        <p class="info-item">
+          <b>Likes</b>
+        </p>
+        <p class="info-item">
+          <b>Views</b>
+        </p>
+        <p class="info-item">
+          <b>Comments</b>
+        </p>
+        <p class="info-item">
+          <b>Downloads</b>
+        </p>
+      </div>
+    </div >`;
+    })
+    
+    
+     .join('');
+    gallery.innerHTML = markup;
+  }
 
 
 ////////////////////pixabay//////////////////////////////
@@ -6,7 +55,7 @@
 // https://pixabay.com/api/?key=23726584-b0725e8cc2245e4091c11b21f&q=yellow+flowers&image_type=photo&pretty=true
 
 
-////////////////////axios jest bardzo podobny do fetch//////////////////////////////
+////////////////////axios jest bardzo podobny do fetch, ale nie trzeba zmieniac danych z jsona na js//////////////////////////////
 //z axios:
 // import axios from 'axios';
 // axios.get('/users').then(res => {
@@ -22,6 +71,18 @@
 
 // console.log('oy');
 //////////////////////////////////////////////////
+
+/////////////////////// Want to use async/await? Add the `async` keyword to your outer function/method./////////////////////
+// async function getUser() {
+//   try {
+//     const response = await axios.get('/user?ID=12345');
+//     console.log(response);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+//////////////////////////////////////////////////
+
 
 ///////////////////async/await potrzebny///////////////////////////////
 //deklaracja:
