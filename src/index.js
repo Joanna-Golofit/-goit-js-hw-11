@@ -1,6 +1,9 @@
 import axios from 'axios';
 // robilam simplelightbox przez npm.. to nie wiem co z tym css - chyba nie trzeba
-// import 'simplelightbox/dist/simple-lightbox.min.css';
+// Opisany w dokumentacji
+import SimpleLightbox from 'simplelightbox';
+// Dodatkowy import stylów
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const SearchForm = document.querySelector("form#search-form");
 const inputSearch = document.querySelector("input[name='searchQuery']");
@@ -34,6 +37,8 @@ const showData = e => {
       // page++;
       console.log('page', page);
       renderGallery(response);
+      btnMore.style.display = 'block';
+
     })
     .catch(err => console.log('Caught error:', err));
 };
@@ -59,19 +64,21 @@ const renderGallery = response => {
   const markup = response.data.hits
     .map(hit => {
       return `<div class="photo-card">
-      <img src="${hit.previewURL}" alt="${hit.tags}" loading="lazy" />
+      <a class="gallery__item" href=${hit.largeImageURL}>
+        <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
+      </a>
       <div class="info">
         <p class="info-item">
-          <b>Likes</b>
+          <b>Likes</b> ${hit.likes}
         </p>
         <p class="info-item">
-          <b>Views</b>
+          <b>Views</b> ${hit.views}
         </p>
         <p class="info-item">
-          <b>Comments</b>
+          <b>Comments</b> ${hit.comments}
         </p>
         <p class="info-item">
-          <b>Downloads</b>
+          <b>Downloads</b> ${hit.downloads}
         </p>
       </div>
     </div>`;
@@ -81,6 +88,20 @@ const renderGallery = response => {
   gallery.innerHTML = markup;
 };
 
+
+let gallerySL = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
+
+
+//*********************************************************************
+//z hw7 zad2
+// let gallerySL = new SimpleLightbox('.gallery a', {
+//   captionsData: 'alt',
+//   captionDelay: 250,
+// });
 
 ////////////////////pixabay//////////////////////////////
 // Your API key: 23726584-b0725e8cc2245e4091c11b21f
