@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.css"],"names":[],"mappings":"AAAA,YACE,YAAa,CACb,cACF","file":"styles.9317727f.css","sourceRoot":"../src","sourcesContent":["div.gallery {\n  display: flex;\n  flex-wrap: wrap;\n}"]}
