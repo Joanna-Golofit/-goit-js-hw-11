@@ -5,20 +5,22 @@ import SimpleLightbox from 'simplelightbox';
 // Dodatkowy import stylów
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const SearchForm = document.querySelector("form#search-form");
+const SearchForm = document.querySelector('form#search-form');
 const inputSearch = document.querySelector("input[name='searchQuery']");
 const gallery = document.querySelector('div.gallery');
 const btnMore = document.querySelector('button.load-more');
 let perPage = 40;
 let page = 1;
 
-/////////////// łapie inputSearchValue /////////////:
-const showData = e => {
+const showPictures = e => {
+  // zapobiega domyslnemu przeladowaniu strony po wyslaniu formularza:
   e.preventDefault();
+  // łapie inputSearchValue :
   let inputSearchValue = inputSearch.value;
+  //wyswietla to, co zlapalo:
   console.log('showData, inputSearchValue:', inputSearchValue);
 
-  /////////////// wyszukuje po inputSearchValue /////////////:
+  /////////////// wyszukuje w API po inputSearchValue i dodatkowych kryteriach /////////////:
 
   axios
     .get(
@@ -26,78 +28,78 @@ const showData = e => {
     )
     .then(response => {
       console.log('inputSearchValue:', inputSearchValue);
-      // console.log('API_KEY', API_KEY); // dziala
-      console.log('response:', response);
-      console.log('response.data', response.data);
-      console.log('response.data.hits', response.data.hits);
-      response.data.hits.forEach(hit => console.log('hit', hit.previewURL));
-      console.log('response.data.hits[0]', response.data.hits[0]);
-      console.log('response.data.hits[1].pageURL', response.data.hits[1].pageURL);
-      console.log('response.data.hits[2].pageURL', response.data.hits[2].pageURL);
+      console.log('response.data', response.data.hits[0]);
       // page++;
       console.log('page', page);
       renderGallery(response);
       btnMore.style.display = 'block';
-
     })
     .catch(err => console.log('Caught error:', err));
 };
 // inputSearch.addEventListener('click', showData );
 
-SearchForm.addEventListener('submit', showData);
+SearchForm.addEventListener('submit', showPictures);
 /////////////////////////////////////////////
-
 
 btnMore.style.display = 'none';
 
-const q = "cat dog";
-const API_KEY = "23726584-b0725e8cc2245e4091c11b21f";
+const q = 'cat dog';
+const API_KEY = '23726584-b0725e8cc2245e4091c11b21f';
 
 // zeby przerzucic tu axios:
 // const fetchPicts = inputSearchValue => {
 
 // }
 
-
-
 const renderGallery = response => {
   const markup = response.data.hits
-    .map(hit => {
-      return `<div class="photo-card">
+    .map(
+      hit =>
+        `<div class="photo-card">
       <a class="gallery__item" href=${hit.largeImageURL}>
-        <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
+      <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
       </a>
       <div class="info">
-        <p class="info-item">
-          <b>Likes</b> ${hit.likes}
-        </p>
-        <p class="info-item">
-          <b>Views</b> ${hit.views}
-        </p>
-        <p class="info-item">
-          <b>Comments</b> ${hit.comments}
-        </p>
-        <p class="info-item">
-          <b>Downloads</b> ${hit.downloads}
-        </p>
+      <p class="info-item">
+      <b>Likes</b> ${hit.likes}
+      </p>
+      <p class="info-item">
+      <b>Views</b> ${hit.views}
+      </p>
+      <p class="info-item">
+      <b>Comments</b> ${hit.comments}
+      </p>
+      <p class="info-item">
+      <b>Downloads</b> ${hit.downloads}
+      </p>
       </div>
-    </div>`;
-    })
-
+      </div>`,
+    )
     .join('');
+
   gallery.innerHTML = markup;
 };
 
+var lightbox = new SimpleLightbox('.gallery a');
 
-let gallerySL = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
-
-
+// let lightbox = new SimpleLightbox('.gallery a', {
+//   captionsData: 'alt',
+//   captionDelay: 250,
+// });
 
 //*********************************************************************
-//z hw7 zad2
+
+//////////////////// logi z axios.then////////////////////
+// console.log('API_KEY', API_KEY); // dziala
+// console.log('response:', response);
+// console.log('response.data.hits', response.data.hits);
+// response.data.hits.forEach(hit => console.log('hit', hit.previewURL));
+// console.log('response.data.hits[0]', response.data.hits[0]);
+// console.log('response.data.hits[1].pageURL', response.data.hits[1].pageURL);
+// console.log('response.data.hits[2].pageURL', response.data.hits[2].pageURL);
+////////////////////////////////////////////////////////////
+
+//////////////////////z hw7 zad2////////////////////
 // let gallerySL = new SimpleLightbox('.gallery a', {
 //   captionsData: 'alt',
 //   captionDelay: 250,
@@ -107,14 +109,12 @@ let gallerySL = new SimpleLightbox('.gallery a', {
 // Your API key: 23726584-b0725e8cc2245e4091c11b21f
 // https://pixabay.com/api/?key=23726584-b0725e8cc2245e4091c11b21f&q=yellow+flowers&image_type=photo&pretty=true
 
-
 ////////////////////axios jest bardzo podobny do fetch, ale nie trzeba zmieniac danych z jsona na js//////////////////////////////
 //z axios:
 // import axios from 'axios';
 // axios.get('/users').then(res => {
 //   console.log(res.data);
 // });
-
 
 //z zajec
 // axios
@@ -135,7 +135,6 @@ let gallerySL = new SimpleLightbox('.gallery a', {
 //   }
 // }
 //////////////////////////////////////////////////
-
 
 ///////////////////async/await potrzebny///////////////////////////////
 //deklaracja:
