@@ -41,27 +41,17 @@ async function showPictures(e) {
       console.log('pod fetchPictures respData.hits', respData.hits);
       renderGallery(respData);
       btnMore.style.display = 'block';
+      //powinno odpalic simplelightbox...
+      const lightbox = new SimpleLightbox('.gallery a', {
+        captionsData: 'alt',
+        captionDelay: 250,
+      });
     })
     .catch(error => console.log(error));
+}
 
-
-  /////////////// wyszukuje w API po inputSearchValue i dodatkowych kryteriach /////////////:
-  // axios
-  //   .get(
-  //     `https://pixabay.com/api/?key=${API_KEY}&q=${inputSearchValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=10`,
-  //   )
-  //   .then(response => {
-  //     console.log('inputSearchValue:', inputSearchValue);
-  //     console.log('response.data', response.data.hits[0]);
-  //     // page++;
-  //     console.log('page', page);
-  //     renderGallery(response);
-  //     btnMore.style.display = 'block';
-  //   })
-  //   .catch(err => console.log('Caught error:', err));
-  //////////////////////////////////////////
-};
-
+// //powinno odpalic simplelightbox...
+//       const lightbox = new SimpleLightbox('.gallery a');
 
 SearchForm.addEventListener('submit', showPictures);
 /////////////////////////////////////////////
@@ -71,14 +61,13 @@ btnMore.style.display = 'none';
 const q = 'cat dog';
 const API_KEY = '23726584-b0725e8cc2245e4091c11b21f';
 
-
 // deklaracja funkcji renderGallery do tworzenia znacznikow galerii w html:
 const renderGallery = respData => {
   const markup = respData.hits
     .map(
       hit =>
         `<div class="photo-card">
-    <a class="gallery__item" href=${hit.largeImageURL}>
+        <a class="gallery__item" href=${hit.largeImageURL}>
       <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
       </a>
       <div class="info">
@@ -102,15 +91,28 @@ const renderGallery = respData => {
   gallery.innerHTML = markup;
 };
 
-//powinno odpalic simplelightbox...
-var lightbox = new SimpleLightbox('.gallery a');
-
 // let lightbox = new SimpleLightbox('.gallery a', {
-  //   captionsData: 'alt',
+//   captionsData: 'alt',
 //   captionDelay: 250,
 // });
 
 //*********************************************************************
+
+/////////////// wyszukuje w API po inputSearchValue i dodatkowych kryteriach /////////////:
+// axios
+//   .get(
+//     `https://pixabay.com/api/?key=${API_KEY}&q=${inputSearchValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=10`,
+//   )
+//   .then(response => {
+//     console.log('inputSearchValue:', inputSearchValue);
+//     console.log('response.data', response.data.hits[0]);
+//     // page++;
+//     console.log('page', page);
+//     renderGallery(response);
+//     btnMore.style.display = 'block';
+//   })
+//   .catch(err => console.log('Caught error:', err));
+//////////////////////////////////////////
 
 /////////////////// Want to use async/await? Add the `async` keyword to your outer function/method.///////////////
 // async function getUser() {
@@ -158,8 +160,6 @@ var lightbox = new SimpleLightbox('.gallery a');
 
 // console.log('oy');
 //////////////////////////////////////////////////
-
-
 
 ///////////////////async/await fetch potrzebny///////////////////////////////
 //deklaracja:
