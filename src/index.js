@@ -27,8 +27,8 @@ async function fetchPictures(inputSearchValue, page) {
   }
 }
 
-//  deklaracja asynchronicznej(?) funkcji showPictures (bo bez async te dziala):
 
+//  deklaracja asynchronicznej(?) funkcji showPictures (bo bez async te dziala):
 function showPictures(e) {
   // zapobiega domyslnemu przeladowaniu strony po wyslaniu formularza:
   e.preventDefault();
@@ -37,7 +37,7 @@ function showPictures(e) {
   //wyswietla to, co zlapalo:
   console.log('showData, inputSearchValue:', inputSearchValue);
   // wywołanie funkcji:
-  fetchPictures(inputSearchValue)
+  fetchPictures(inputSearchValue, page)
     .then(respData => {
       console.log('wywolanie fetchPictures respData', respData); // dziala
       // console.log('pod fetchPictures respData.hits', respData.hits); // dziala
@@ -51,11 +51,24 @@ function showPictures(e) {
 
       // jesli pusta tablica z backendu (a koncowka kolekcji?) jest warning, ale button load more sie pojawia
       if (picsInArray === 0) {
-        Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+        Notiflix.Notify.warning(
+          'Sorry, there are no images matching your search query. Please try again.',
+        );
       } else if (picsInArray > 0) {
+        //kiedy znajda sie jakies obrazki
         renderGallery(respData);
         btnMore.style.display = 'block';
+        Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
+        console.log("page?", page);
+
+        //dodaje buttona:
+        if (page <= totalPages) {
+          btnMore.addEventListener('click', loadMore);
+        }
       }
+      // Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
+
+      // lightbox().refresh(); // lightbox.refresh()?
 
       // jesli 1 strona i<40 picts w array (dogs cats mouse)
 
@@ -67,6 +80,21 @@ function showPictures(e) {
     })
     .catch(error => console.log(error));
 }
+
+
+const loadMore = () => {
+  btnMore.style.display = 'none';
+  page += 1;
+  let inputSearchValue = inputSearch.value;
+  fetchPictures(inputSearchValue, page)
+    .then(respData => {
+      renderGallery(respData);
+        btnMore.style.display = 'block';
+        Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
+        console.log("page?", page);
+    })
+    .catch(error => console.log(error));
+};
 
 SearchForm.addEventListener('submit', showPictures);
 /////////////////////////////////////////////
