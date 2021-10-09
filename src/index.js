@@ -10,9 +10,8 @@ const SearchForm = document.querySelector('form#search-form');
 const inputSearch = document.querySelector("input[name='searchQuery']");
 const gallery = document.querySelector('div.gallery');
 const btnMore = document.querySelector('button.load-more');
-let perPage = 5;
+let perPage = 9;
 let page = 1;
-
 
 // najpierw deklaracja asynchronicznej funkcji fetchPictures:
 async function fetchPictures(inputSearchValue, page) {
@@ -26,7 +25,6 @@ async function fetchPictures(inputSearchValue, page) {
     console.log('deklaracja fetchPictures ,async/await, error:', error.message);
   }
 }
-
 
 //  deklaracja asynchronicznej(?) funkcji showPictures (bo bez async te dziala):
 function showPictures(e) {
@@ -59,14 +57,24 @@ function showPictures(e) {
         renderGallery(respData);
         btnMore.style.display = 'block';
         Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
-        console.log("page?", page);
+        console.log('page?', page);
 
-        //dodaje buttona:
-        if (page <= totalPages) {
+        //dodaje obsluge buttona:
+
+        if (page < totalPages) {
           btnMore.addEventListener('click', loadMore);
+        } else {
+          btnMore.style.display = 'none';
+          Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
         }
+
+        // if (page < totalPages) {
+        //   btnMore.addEventListener('click', loadMore);
+        // } else if (page = totalPages) {
+        //   btnMore.style.display = 'none';
+        //   Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
+        // }
       }
-      // Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
 
       // lightbox().refresh(); // lightbox.refresh()?
 
@@ -81,7 +89,6 @@ function showPictures(e) {
     .catch(error => console.log(error));
 }
 
-
 const loadMore = () => {
   btnMore.style.display = 'none';
   page += 1;
@@ -89,9 +96,9 @@ const loadMore = () => {
   fetchPictures(inputSearchValue, page)
     .then(respData => {
       renderGallery(respData);
-        btnMore.style.display = 'block';
-        Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
-        console.log("page?", page);
+      btnMore.style.display = 'block';
+      Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
+      console.log('page?', page);
     })
     .catch(error => console.log(error));
 };
@@ -134,7 +141,6 @@ const renderGallery = respData => {
 };
 
 //*********************************************************************
-
 
 // let lightbox = new SimpleLightbox('.gallery a', {
 //   captionsData: 'alt',
