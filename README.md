@@ -21,3 +21,5 @@ This project is a small application to search and view images by a keyword .
 - Pixabay API
 
 - SimpleLightbox
+
+- paginacja

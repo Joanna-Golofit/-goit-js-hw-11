@@ -1,5 +1,6 @@
 import axios from 'axios';
-// robilam simplelightbox przez npm.. , odinstalowalam, probuje przez importy.. cos nie dziala ciagle i sie nie wyswietla
+import Notiflix from 'notiflix';
+// robilam simplelightbox przez npm.. , odinstalowalam, probuje przez importy.. dziala.. moze tamten tez dzialal?
 // Opisany w dokumentacji
 import SimpleLightbox from 'simplelightbox';
 // Dodatkowy import stylów
@@ -12,11 +13,12 @@ const btnMore = document.querySelector('button.load-more');
 let perPage = 40;
 let page = 1;
 
+
 // najpierw deklaracja asynchronicznej funkcji fetchPictures:
-async function fetchPictures(inputSearchValue) {
+async function fetchPictures(inputSearchValue, page) {
   try {
     const response = await axios.get(
-      `https://pixabay.com/api/?key=${API_KEY}&q=${inputSearchValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=10`,
+      `https://pixabay.com/api/?key=${API_KEY}&q=${inputSearchValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${perPage}&page=${page}`,
     );
     // console.log('deklaracja fetchPictures response:', response); // dziala
     return response.data;
@@ -38,8 +40,24 @@ function showPictures(e) {
   fetchPictures(inputSearchValue)
     .then(respData => {
       console.log('wywolanie fetchPictures respData', respData); // dziala
-      console.log('pod fetchPictures respData.hits', respData.hits);
-      renderGallery(respData);
+      // console.log('pod fetchPictures respData.hits', respData.hits); // dziala
+      // console.log('respData.hits.length', respData.hits.length); // dziala - to to samo co perPage - chyba, ze to koncowka kolekcji.. to jest mniejsze niz perPage
+      // console.log('respData.totalHits', respData.totalHits); // dziala
+
+      let picsInArray = respData.hits.length;
+      console.log('picsInArray', picsInArray);
+      const totalPages = Math.ceil(respData.totalHits / perPage);
+      console.log('totalPages', totalPages);
+
+      // jesli pusta tablica z backendu (a koncowka kolekcji?) jest warning, ale button load more sie pojawia
+      if (picsInArray === 0) {
+        Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+      } else if (picsInArray > 0) {
+        renderGallery(respData);
+      }
+
+      // jesli 1 strona i<40 picts w array (dogs cats mouse)
+
       btnMore.style.display = 'block';
       //odpala simplelightbox...
       const lightbox = new SimpleLightbox('.gallery a', {
@@ -55,7 +73,6 @@ SearchForm.addEventListener('submit', showPictures);
 
 btnMore.style.display = 'none';
 
-const q = 'cat dog';
 const API_KEY = '23726584-b0725e8cc2245e4091c11b21f';
 
 // deklaracja funkcji renderGallery do tworzenia znacznikow galerii w html:
