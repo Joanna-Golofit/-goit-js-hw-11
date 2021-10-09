@@ -12,7 +12,7 @@ const SearchForm = document.querySelector('form#search-form');
 const inputSearch = document.querySelector("input[name='searchQuery']");
 const gallery = document.querySelector('div.gallery');
 const btnMore = document.querySelector('button.load-more');
-let perPage = 9;
+let perPage = 40;
 let page = 0;
 
 // najpierw deklaracja asynchronicznej funkcji fetchPictures:
@@ -59,9 +59,11 @@ async function showPictures(e) {
       } else {
         //kiedy znajda sie jakies obrazki
         renderGallery(respData);
-        btnMore.style.display = 'block';
         Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
         console.log('z elsa - page?', page);
+        if (page < totalPages) {
+          btnMore.style.display = 'block';
+        }
 
         //dodaje obsluge buttona:
 
@@ -145,9 +147,9 @@ const renderGallery = respData => {
   const markup = respData.hits
     .map(
       hit =>
-        `<div class="photo-card">
-        <a class="gallery__item" href=${hit.largeImageURL}>
-      <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
+        `<div class="photo-card gallery__item">
+        <a class="gallery__link" href=${hit.largeImageURL}>
+      <img class="gallery__image" src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" />
       </a>
       <div class="info">
       <p class="info-item">
