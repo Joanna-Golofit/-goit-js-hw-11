@@ -1,3 +1,5 @@
+// dogs cats mouse
+
 import axios from 'axios';
 import Notiflix from 'notiflix';
 // robilam simplelightbox przez npm.. , odinstalowalam, probuje przez importy.. dziala.. moze tamten tez dzialal?
@@ -11,7 +13,7 @@ const inputSearch = document.querySelector("input[name='searchQuery']");
 const gallery = document.querySelector('div.gallery');
 const btnMore = document.querySelector('button.load-more');
 let perPage = 9;
-let page = 1;
+let page = 0;
 
 // najpierw deklaracja asynchronicznej funkcji fetchPictures:
 async function fetchPictures(inputSearchValue, page) {
@@ -27,9 +29,11 @@ async function fetchPictures(inputSearchValue, page) {
 }
 
 //  deklaracja asynchronicznej(?) funkcji showPictures (bo bez async te dziala):
-function showPictures(e) {
+async function showPictures(e) {
   // zapobiega domyslnemu przeladowaniu strony po wyslaniu formularza:
   e.preventDefault();
+  gallery.innerHTML = '';
+  page = 1;
   // łapie inputSearchValue :
   let inputSearchValue = inputSearch.value;
   //wyswietla to, co zlapalo:
@@ -52,29 +56,31 @@ function showPictures(e) {
         Notiflix.Notify.warning(
           'Sorry, there are no images matching your search query. Please try again.',
         );
-      } else if (picsInArray > 0) {
+      } else {
         //kiedy znajda sie jakies obrazki
         renderGallery(respData);
         btnMore.style.display = 'block';
         Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
-        console.log('page?', page);
+        console.log('z elsa - page?', page);
 
         //dodaje obsluge buttona:
 
-        if (page < totalPages) {
-          btnMore.addEventListener('click', loadMore);
-        } else {
-          btnMore.style.display = 'none';
-          Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
-        }
-
-        // if (page < totalPages) {
-        //   btnMore.addEventListener('click', loadMore);
-        // } else if (page = totalPages) {
+        // if (page === totalPages) {
+        //   console.log('z page = totalPages ' + page);
         //   btnMore.style.display = 'none';
         //   Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
+        // } else if (page < totalPages) {
+        //   console.log("z page < totalPages " + page);
+        //   btnMore.addEventListener('click', loadMore);
         // }
       }
+
+      // if (page < totalPages) {
+      //   btnMore.addEventListener('click', loadMore);
+      // } else if (page = totalPages) {
+      //   btnMore.style.display = 'none';
+      //   Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
+      // }
 
       // lightbox().refresh(); // lightbox.refresh()?
 
@@ -91,19 +97,43 @@ function showPictures(e) {
 
 const loadMore = () => {
   btnMore.style.display = 'none';
-  page += 1;
   let inputSearchValue = inputSearch.value;
+  page += 1;
   fetchPictures(inputSearchValue, page)
     .then(respData => {
       renderGallery(respData);
       btnMore.style.display = 'block';
-      Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
-      console.log('page?', page);
+      // Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
+      console.log('loadMore page?', page);
+
+      //przenosze sie tu z danymi
+      const totalPages = Math.ceil(respData.totalHits / perPage);
+      let picsInArray = respData.hits.length;
+console.log('picsInArray', picsInArray);
+      //tu dac ify!
+      if (picsInArray > 0) {
+        //kiedy znajda sie jakies obrazki
+        renderGallery(respData);
+        btnMore.style.display = 'block';
+        // Notiflix.Notify.success(`Hooray! We found ${respData.totalHits} images.`);
+        console.log('loadeMore z ifa - page?', page);
+
+        if (page === totalPages) {
+          console.log('z if page === totalPages ' + page);
+          btnMore.style.display = 'none';
+          Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
+        } else if (page < totalPages) {
+          console.log('z if page < totalPages ' + page);
+          // btnMore.addEventListener('click', loadMore);
+        }
+      }
+
     })
     .catch(error => console.log(error));
 };
 
 SearchForm.addEventListener('submit', showPictures);
+btnMore.addEventListener('click', loadMore);
 /////////////////////////////////////////////
 
 btnMore.style.display = 'none';
