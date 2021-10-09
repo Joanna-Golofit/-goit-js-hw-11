@@ -25,9 +25,9 @@ async function fetchPictures(inputSearchValue) {
   }
 }
 
-//  deklaracja asynchronicznej funkcji showPictures:
+//  deklaracja asynchronicznej(?) funkcji showPictures (bo bez async te dziala):
 
-async function showPictures(e) {
+function showPictures(e) {
   // zapobiega domyslnemu przeladowaniu strony po wyslaniu formularza:
   e.preventDefault();
   // łapie inputSearchValue :
@@ -41,7 +41,7 @@ async function showPictures(e) {
       console.log('pod fetchPictures respData.hits', respData.hits);
       renderGallery(respData);
       btnMore.style.display = 'block';
-      //powinno odpalic simplelightbox...
+      //odpala simplelightbox...
       const lightbox = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
@@ -49,9 +49,6 @@ async function showPictures(e) {
     })
     .catch(error => console.log(error));
 }
-
-// //powinno odpalic simplelightbox...
-//       const lightbox = new SimpleLightbox('.gallery a');
 
 SearchForm.addEventListener('submit', showPictures);
 /////////////////////////////////////////////
@@ -91,12 +88,13 @@ const renderGallery = respData => {
   gallery.innerHTML = markup;
 };
 
+//*********************************************************************
+
+
 // let lightbox = new SimpleLightbox('.gallery a', {
 //   captionsData: 'alt',
 //   captionDelay: 250,
 // });
-
-//*********************************************************************
 
 /////////////// wyszukuje w API po inputSearchValue i dodatkowych kryteriach /////////////:
 // axios
