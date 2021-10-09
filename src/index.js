@@ -10,7 +10,7 @@ const SearchForm = document.querySelector('form#search-form');
 const inputSearch = document.querySelector("input[name='searchQuery']");
 const gallery = document.querySelector('div.gallery');
 const btnMore = document.querySelector('button.load-more');
-let perPage = 40;
+let perPage = 5;
 let page = 1;
 
 
@@ -54,11 +54,11 @@ function showPictures(e) {
         Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
       } else if (picsInArray > 0) {
         renderGallery(respData);
+        btnMore.style.display = 'block';
       }
 
       // jesli 1 strona i<40 picts w array (dogs cats mouse)
 
-      btnMore.style.display = 'block';
       //odpala simplelightbox...
       const lightbox = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
