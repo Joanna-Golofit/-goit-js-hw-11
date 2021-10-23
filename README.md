@@ -23,3 +23,8 @@ This project is a small application to search and view images by a keyword.
 - SimpleLightbox
 
 - paginacja
+
+
+### Criteria 
+
+https://github.com/goitacademy/javascript-homework/blob/main/v2/11/README.pl.md
